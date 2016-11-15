@@ -173,7 +173,7 @@ label.text {
 
 							<div id="collapseOne" class="panel-collapse collapse in">
 								<div class="panel-body">
-									<form role="form" action="Anime" method="POST">
+									<form role="form" action="AnimeHelper" method="POST">
 										<div class="form-group">
 											<label class="text" for="anime_name">作品名</label> <input
 												type="text" class="form-control" id="anime_name"
@@ -222,7 +222,7 @@ label.text {
 
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<form action="Anime" method="GET" id="form_set"
+								<form action="AnimeHelper" method="GET" id="form_set"
 									class="form-inline " role="form">
 									<h4 class="panel-title">
 										查询结果 <span style="float: right"> <label for="name">每页显示</label>
@@ -258,7 +258,7 @@ label.text {
 										</c:forEach>
 									</table>
 								</div>
-								<form action="Anime" method="GET">
+								<form action="AnimeHelper" method="GET">
 									<ul class="pagination">
 										<li><a
 											href="?page_idx=1&page_content_number=${page_content_number}">&laquo;</a></li>
