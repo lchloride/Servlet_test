@@ -32,14 +32,28 @@ public class AnimeHelper extends HttpServlet {
 			AnimeManager am = AnimeManager.getInstance();
 //			List<String> column_name = null;
 //			List<List<Object>> db = null;
+			try {
+				am.setPageContentNumber(Integer.parseInt(request.getParameter("page_content_number"))); 				
+			} catch (NumberFormatException e) {
+				// TODO: handle exception
+				am.setPageContentNumber(5);
+			}
+			try {
+				am.setPageIndex(Integer.parseInt(request.getParameter("page_idx"))); 
+			} catch (NumberFormatException e) {
+				// TODO: handle exception
+				am.setPageIndex(1);
+			}
+
+			
 			Object[] result = null;
 			result = am.findAllAnime();
 			request.setAttribute("QueryHeader", result[0]);
 			request.setAttribute("QueryResult", result[1]);
 			request.setAttribute("result", true);
-			//request.setAttribute("ResultPageCount", (int)Math.ceil((double)count/page_content_number));
-			//request.setAttribute("page_content_number",page_content_number);
-			//request.setAttribute("page_idx",page_idx);
+			request.setAttribute("ResultPageCount", (int)Math.ceil((double)am.getAnimeRowsNumber()/am.getPageContentNumber()));
+			request.setAttribute("page_content_number",am.getPageContentNumber());
+			request.setAttribute("page_idx",am.getPageIndex());
 			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 			System.out.println("forward to index.jsp");
 			dispatcher.forward(request, response);

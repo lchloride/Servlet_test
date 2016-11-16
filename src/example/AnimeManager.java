@@ -11,9 +11,15 @@ import javax.naming.NamingException;
 public class AnimeManager {
 	private static AnimeManager anime_manager = new AnimeManager();
 	private Map<String, String> column_name_trans;
+	private int page_content_number;
+	private int page_index;
+	private int anime_rows_number;
 
 	public AnimeManager() {
 		// TODO Auto-generated constructor stub
+		page_content_number = 5;
+		page_index = 1;
+		
 		column_name_trans = new HashMap<String, String>();
 		column_name_trans.put("anime_name", "动漫名称");
 		column_name_trans.put("start_time", "上映日期");
@@ -22,6 +28,26 @@ public class AnimeManager {
 		column_name_trans.put("episode_number", "集数");
 		column_name_trans.put("director_name", "导演/监督");
 		column_name_trans.put("scriptwriter_name", "剧本");
+	}
+
+	public int getPageContentNumber() {
+		return page_content_number;
+	}
+
+	public void setPageContentNumber(int page_content_number) {
+		this.page_content_number = page_content_number;
+	}
+
+	public int getPageIndex() {
+		return page_index;
+	}
+
+	public void setPageIndex(int page_index) {
+		this.page_index = page_index;
+	}
+
+	public int getAnimeRowsNumber() {
+		return anime_rows_number;
 	}
 
 	public static AnimeManager getInstance() {
@@ -38,7 +64,7 @@ public class AnimeManager {
 			conn = DB.getConn();
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT * FROM anime";
+			sql = genSQL();
 			rs = stmt.executeQuery(sql);
 
 			List<Anime> anime_list = null;
@@ -63,6 +89,9 @@ public class AnimeManager {
 			
 			// 生成表格主体
 			anime_form = formatResult(anime_list);
+			
+			//获得表的总行数
+			getRowsNumber(conn);
 			
 			// 构造返回值
 			result = new Object[2];
@@ -163,6 +192,26 @@ public class AnimeManager {
 
 	}
 
+	private String genSQL() {
+		String sql = null;
+		System.out.println(page_content_number+", "+page_index);
+		sql = "select * from anime limit "+page_content_number*(page_index-1)+","+page_content_number;
+		System.out.println(sql);
+		return sql;
+	}
+	
+	private void getRowsNumber(Connection conn) throws NamingException, SQLException {
+		if (conn == null)
+			conn = DB.getConn();
+		Statement stmt = conn.createStatement();
+		String sql = "select ROWS_NUM from info where TABLE_NAME=\"anime\";";
+		ResultSet rs = stmt.executeQuery(sql);
+		if (rs.next())
+			anime_rows_number = rs.getInt("ROWS_NUM");
+		else
+			anime_rows_number = page_content_number;
+	}
+	
 	public List<String> formatMetaData(ResultSet rs) throws SQLException {
 		ResultSetMetaData rsmd = rs.getMetaData();
 		List<String> column_names = new ArrayList<String>();
@@ -191,4 +240,5 @@ public class AnimeManager {
 		}
 		return db;
 	}
+	
 }
