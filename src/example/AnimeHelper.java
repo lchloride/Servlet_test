@@ -1,6 +1,9 @@
 package example;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,19 +35,24 @@ public class AnimeHelper extends HttpServlet {
 			AnimeManager am = AnimeManager.getInstance();
 //			List<String> column_name = null;
 //			List<List<Object>> db = null;
+			Map<String, Object> para = new HashMap<String, Object>();
+			para.put("anime_name", new String(request.getParameter("anime_name").getBytes("iso8859-1"), "UTF-8"));
+			para.put("product_company", new String(request.getParameter("product_company").getBytes(), "UTF-8"));
+			para.put("writer_name", new String(request.getParameter("writer_name").getBytes(), "UTF-8"));
+			
 			try {
-				am.setPageContentNumber(Integer.parseInt(request.getParameter("page_content_number"))); 				
+				para.put("page_content_number", Integer.parseInt(request.getParameter("page_content_number"))); 				
 			} catch (NumberFormatException e) {
 				// TODO: handle exception
-				am.setPageContentNumber(5);
+				para.put("page_content_number", 5);
 			}
 			try {
-				am.setPageIndex(Integer.parseInt(request.getParameter("page_idx"))); 
+				para.put("page_idx", Integer.parseInt(request.getParameter("page_idx"))); 
 			} catch (NumberFormatException e) {
 				// TODO: handle exception
-				am.setPageIndex(1);
+				para.put("page_idx",1);
 			}
-
+			am.setParameter(para);
 			
 			Object[] result = null;
 			result = am.findAllAnime();

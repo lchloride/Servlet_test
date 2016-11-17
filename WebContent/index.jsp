@@ -176,17 +176,17 @@ label.text {
 									<form role="form" action="AnimeHelper" method="POST">
 										<div class="form-group">
 											<label class="text" for="anime_name">作品名</label> <input
-												type="text" class="form-control" id="anime_name"
+												type="text" class="form-control" id="anime_name" name="anime_name"
 												placeholder="请输入作品名称，不指定该项可不填">
 										</div>
 										<div class="form-group">
 											<label class="text" for="product_name">制作公司</label> <input
-												type="text" class="form-control" id="product_name"
+												type="text" class="form-control" id="product_company" name="product_company"
 												placeholder="请输入制作公司名称，不指定该项可不填">
 										</div>
 										<div class="form-group">
 											<label class="text" for="product_name">作者</label> <input
-												type="text" class="form-control" id="writer_name"
+												type="text" class="form-control" id="writer_name" name="writer_name"
 												placeholder="请输入作者名，不指定该项可不填">
 										</div>
 										<label class="text" for="anime_name">要显示的列</label>
