@@ -53,6 +53,7 @@ public class DB {
 				item_obj = method.format(item);
 				form.add(item_obj);
 			}
+			System.out.println("queryzise:"+form.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -7,16 +7,36 @@ import java.util.Map.*;
 import javax.naming.NamingException;
 
 public class AnimeDA implements Store<Anime>{
+	public String sql = null; 
 	protected Object[] find(Map<String, String> para) {
-		String sql = "SELECT * FROM anime WHERE 1=1 AND ";
-		for (Entry<String, String> entry  : para.entrySet()) {
-			if (entry.getKey() != "limit_st" && entry.getKey() != "page_content_number")
-				sql += entry.getKey() + " like '%" + entry.getValue() + "%' AND ";
-		}
-		sql = sql.substring(0, sql.lastIndexOf("AND"));
+		//String sql = null;
+		sql = new String("SELECT *");
+//		for (Entry<String, String> entry : para.entrySet()) {
+//			//System.out.println(entry.getKey()+" "+entry.getValue());
+//			if (entry.getKey().contains("Checkbox_") && entry.getValue().equalsIgnoreCase("on")) {
+//				sql += entry.getKey().substring(9)+",";
+//			}
+//			System.out.println(sql);
+//		}
+//		int last_comma = sql.lastIndexOf(',');
+//		if (last_comma == -1)
+//			sql += "*";
+//		else
+//			sql = sql.substring(0,  sql.lastIndexOf(','));
 		
+		if (para.get("Checkbox_character")=="on")
+			sql += " FROM animeView WHERE 1=1 AND ";
+		else
+			sql += " FROM anime WHERE 1=1 AND ";
+		for (Entry<String, String> entry  : para.entrySet()) {
+			if (entry.getKey().contains("Text_"))
+				sql += entry.getKey().substring("Text_".length()) + " like '%" + entry.getValue() + "%' AND ";
+		}
+		sql = sql.substring(0, sql.lastIndexOf("AND"));	
+		sql = "SELECT *, FOUND_ROWS() FROM ("+sql+") T ";
 		sql += "limit "+para.get("limit_st")+", "+para.get("page_content_number");
 		System.out.println("querySQL:"+sql);
+
 		// TODO add exec query sentence
 		Object[] anime_list = DB.execSQL(sql, new AnimeDA());
 		return anime_list;
@@ -34,6 +54,7 @@ public class AnimeDA implements Store<Anime>{
 		anime.setEpisodeNumber((int) list.get(4));
 		anime.setDirectorName((String) list.get(5));
 		anime.setScriptwriterName((String) list.get(6));
+		anime.setRowNum(((Long)list.get(7)).intValue());
 		return anime;
 	}
 	

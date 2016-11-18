@@ -9,6 +9,6 @@
         maxWait="10000" 
         maxActive="100"
         driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://127.0.0.1:3306/anime"
+        url="jdbc:mysql://127.0.0.1:3306/anime?useUnicode=true&amp;characterEncoding=utf-8"
         logAbandoned="true" />
 </Context>

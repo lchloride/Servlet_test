@@ -1,6 +1,7 @@
 package example;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class AnimeManager {
 	private static AnimeManager anime_manager = new AnimeManager();
@@ -25,6 +26,7 @@ public class AnimeManager {
 		column_name_trans.put("episode_number", "集数");
 		column_name_trans.put("director_name", "导演/监督");
 		column_name_trans.put("scriptwriter_name", "剧本");
+		column_name_trans.put("character", "角色");
 	}
 
 	public int getPageContentNumber() {
@@ -56,40 +58,54 @@ public class AnimeManager {
 		List<Anime> anime_list = null;
 		List<String> column_name = null;
 		List<List<Object>> anime_form = null;
-		
+
 		Map<String, String> para = new HashMap<>();
-		para.put("anime_name", (String) parameter.get("anime_name"));
-		para.put("company", (String) parameter.get("product_company"));
-		para.put("writer_name", (String) parameter.get("writer_name"));
+		for (Entry<String, Object> entry : parameter.entrySet()) {
+			para.put(entry.getKey(), entry.getValue().toString());
+		}
 		para.put("limit_st", String.valueOf(page_content_number * (page_idx - 1)));
 		para.put("page_content_number", String.valueOf(page_content_number));
-		
+
 		Object[] query_result = dao.find(para);
-		column_name = (List<String>) query_result[0];
+		column_name = ((List<String>) query_result[0]);
+		System.out.println(column_name);
+		refineColName(column_name, parameter);
 		anime_list = (List<Anime>) query_result[1];
-		
+
 		// 生成表格主体
-		anime_form = formatResult(anime_list);
-		
-		anime_rows_number = anime_list.size();
+		anime_form = formatResult(anime_list, parameter);
+		//
+		if (anime_list.size() > 0)
+			anime_rows_number = anime_list.get(0).getRowNum();
+		else
+			anime_rows_number = 0;
 
 		// 构造返回值
-		result = new Object[2];
+		result = new Object[3];
 		result[0] = column_name;
 		result[1] = anime_form;
-
+		result[2] = dao.sql;
 		return result;
 	}
 
-	public List<List<Object>> formatResult(List<Anime> anime) {
+	public List<List<Object>> formatResult(List<Anime> anime, Map<String, Object> para) {
 		List<List<Object>> db = new ArrayList<List<Object>>();
-		// List<Object> db_item;
 
 		// 展开结果集数据库
 		for (Anime anime_item : anime) {
-			// db_item = new ArrayList<Object>();
-			db.add(anime_item.format());
+			db.add(anime_item.format(para));
 		}
 		return db;
+	}
+
+	protected void refineColName(List<String> src, Map<?, ?> para) {
+		for (int i=0; i<src.size(); i++) {
+			if (para.containsKey("Checkbox_"+src.get(i)))
+				src.set(i, column_name_trans.get(src.get(i)));
+			else {
+				src.remove(i);
+				i--;
+			}
+		}
 	}
 }

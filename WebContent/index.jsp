@@ -158,6 +158,8 @@ label.text {
 								全部动漫信息检索页 <br /> <small>使用作品名、制作商、作者检索动漫作品的基本信息。通过基本信息可以查看详细信息。</small>
 							</h3>
 						</div>
+							<form role="form" action="AnimeHelper" method="POST" id="form_set"
+								id="form_anime">
 						<div class="panel panel-primary" style="background: #E9EEEE">
 							<div class="panel-heading">
 								<h4 class="panel-title">
@@ -170,75 +172,89 @@ label.text {
 									</a>
 								</h4>
 							</div>
+							
 
-							<div id="collapseOne" class="panel-collapse collapse in">
-								<div class="panel-body">
-									<form role="form" action="AnimeHelper" method="POST">
+								<div id="collapseOne" class="panel-collapse collapse in">
+									<div class="panel-body">
+
 										<div class="form-group">
 											<label class="text" for="anime_name">作品名</label> <input
-												type="text" class="form-control" id="anime_name" name="anime_name"
-												placeholder="请输入作品名称，不指定该项可不填">
+												type="text" class="form-control" id="anime_name"
+												name="Text_anime_name" placeholder="请输入作品名称，不指定该项可不填"
+												value="${Text_anime_name}">
 										</div>
 										<div class="form-group">
-											<label class="text" for="product_name">制作公司</label> <input
-												type="text" class="form-control" id="product_company" name="product_company"
-												placeholder="请输入制作公司名称，不指定该项可不填">
+											<label class="text" for="product_company">制作公司</label> <input
+												type="text" class="form-control" id="product_company"
+												name="Text_company" placeholder="请输入制作公司名称，不指定该项可不填"
+												value="${Text_company}">
 										</div>
 										<div class="form-group">
-											<label class="text" for="product_name">作者</label> <input
-												type="text" class="form-control" id="writer_name" name="writer_name"
-												placeholder="请输入作者名，不指定该项可不填">
+											<label class="text" for="writer_name">作者</label> <input
+												type="text" class="form-control" id="writer_name"
+												name="Text_writer_name" placeholder="请输入作者名，不指定该项可不填"
+												value="${Text_writer_name}">
 										</div>
 										<label class="text" for="anime_name">要显示的列</label>
 										<div class="form-group">
 											<label class="checkbox-inline"> <input
-												type="checkbox" id="Checkbox_anime_name" value="option1">动漫名称
+												type="checkbox" id="Checkbox_anime_name"
+												name="Checkbox_anime_name"
+												${Checkbox_anime_name=="on"?"checked":""}>动漫名称
 											</label> <label class="checkbox-inline"> <input
-												type="checkbox" id="Checkbox_start_date" value="option2">上映日期
+												type="checkbox" id="Checkbox_start_date"
+												name="Checkbox_start_time"
+												${Checkbox_start_time=="on"?"checked":""}>上映日期
 											</label> <label class="checkbox-inline"> <input
-												type="checkbox" id="Checkbox_product_company"
-												value="option3">制作公司
+												type="checkbox" id="Checkbox_company"
+												name="Checkbox_company"
+												${Checkbox_company=="on"?"checked":""}>制作公司
 											</label><label class="checkbox-inline"> <input
-												type="checkbox" id="Checkbox_episode_number" value="option3">集数
+												type="checkbox" id="Checkbox_episode_number"
+												name="Checkbox_episode_number"
+												${Checkbox_episode_number=="on"?"checked":""}>集数
 											</label><label class="checkbox-inline"> <input
-												type="checkbox" id="Checkbox_writer" value="option3">原作者
+												type="checkbox" id="Checkbox_writer_name"
+												name="Checkbox_writer_name"
+												${Checkbox_writer_name=="on"?"checked":""}>原作者
 											</label><label class="checkbox-inline"> <input
-												type="checkbox" id="Checkbox_director" value="option3">导演
+												type="checkbox" id="Checkbox_director_name"
+												name="Checkbox_director_name"
+												${Checkbox_director_name=="on"?"checked":""}>导演
 											</label><label class="checkbox-inline"> <input
-												type="checkbox" id="Checkbox_scriptwriter" value="option3">编剧
-											</label><label class="checkbox-inline"> <input
-												type="checkbox" id="Checkbox_character" value="option3">剧中角色<span
-												style="color: #808080">(检索结果可能很多，请慎重选择)</span>
+												type="checkbox" id="Checkbox_scriptwriter_name"
+												name="Checkbox_scriptwriter_name"
+												${Checkbox_scriptwriter_name=="on"?"checked":""}>编剧
 											</label>
+											<!-- <label class="checkbox-inline"> <input
+												type="checkbox" id="Checkbox_character" name="Checkbox_character">剧中角色<span
+												style="color: #808080">(检索结果可能很多，请慎重选择)</span>
+											</label> -->
 										</div>
 										<p>
 											<button type="submit" class="btn btn-primary">提交</button>
 											<button type="reset" class="btn btn-default">重置</button>
 										</p>
-									</form>
+
+									</div>
 								</div>
-							</div>
+							
 						</div>
 
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<form action="AnimeHelper" method="GET" id="form_set"
-									class="form-inline " role="form">
-									<h4 class="panel-title">
-										查询结果 <span style="float: right"> <label for="name">每页显示</label>
-											<select class="form-control" name="page_content_number"
-											style="max-height: 30px;" onchange="submitFun('form_set')">
-												<option value="5" ${page_content_number=="5"?'selected':''}>5</option>
-												<option value="10"
-													${page_content_number=="10"?'selected':''}>10</option>
-												<option value="25"
-													${page_content_number=="25"?'selected':''}>25</option>
-												<option value="50"
-													${page_content_number=="50"?'selected':''}>50</option>
-										</select>
-										</span>
-									</h4>
-								</form>
+
+								<h4 class="panel-title">
+									查询结果 <span style="float: right"> <label for="name">每页显示</label>
+										<select class="form-control" name="page_content_number"
+										style="max-height: 30px;" onchange="submitFun('form_set')">
+											<option value="5" ${page_content_number=="5"?'selected':''}>5</option>
+											<option value="10" ${page_content_number=="10"?'selected':''}>10</option>
+											<option value="25" ${page_content_number=="25"?'selected':''}>25</option>
+											<option value="50" ${page_content_number=="50"?'selected':''}>50</option>
+									</select>
+									</span>
+								</h4>
 							</div>
 							<div class="panel-body">
 								<div class="table-responsive">
@@ -258,21 +274,21 @@ label.text {
 										</c:forEach>
 									</table>
 								</div>
-								<form action="AnimeHelper" method="GET">
-									<ul class="pagination">
-										<li><a
-											href="?page_idx=1&page_content_number=${page_content_number}">&laquo;</a></li>
-										<c:forEach var="page_idx" begin="1"
-											end="${requestScope.ResultPageCount }">
-											<li ${page_idx==requestScope["page_idx"]?'class="active"':''}><a
-												href="?page_idx=${page_idx }&page_content_number=${page_content_number}">${page_idx}</a></li>
-										</c:forEach>
-										<li><a
-											href="?page_idx=${requestScope.ResultPageCount}&page_content_number=${page_content_number}">&raquo;</a></li>
-									</ul>
-								</form>
+								<ul class="pagination">
+									<li><a
+										href="?page_idx=1&page_content_number=${page_content_number}">&laquo;</a></li>
+									<c:forEach var="page_idx" begin="1"
+										end="${requestScope.ResultPageCount }">
+										<li ${page_idx==requestScope["page_idx"]?'class="active"':''}><a
+											href="?page_idx=${page_idx }&page_content_number=${page_content_number}">${page_idx}</a></li>
+									</c:forEach>
+									<li><a
+										href="?page_idx=${requestScope.ResultPageCount}&page_content_number=${page_content_number}">&raquo;</a></li>
+								</ul>
+								<h4>${requestScope.SQL}</h4>
 							</div>
 						</div>
+						</form>
 					</div>
 					<div class="tab-pane fade" id="airgoing">
 						<p>iOS 是一个由苹果公司开发和发布的手机操作系统。最初是于 2007 年首次发布 iPhone、iPod Touch
