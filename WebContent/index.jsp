@@ -64,6 +64,17 @@ label.text {
 	padding-right: 5%;
 }
 
+.txt {
+ border:0px solid #333333;
+ position:relative
+}
+
+.txt span {
+	 position:absolute;
+ bottom:20%;
+ padding:auto;
+ margin:auto
+}
 .myjumbotron {
 	position: relative;
 	width: 800px;
@@ -76,6 +87,7 @@ label.text {
 </style>
 <script type="text/javascript">
 	var collapse = false;
+	var page_idx = ${page_idx};
 	function loadArrow() {
 		if (collapse == true)
 			return "查询条件<span class=\"glyphicon glyphicon-collapse-down\" style=\"float:right\"></span>";
@@ -85,6 +97,13 @@ label.text {
 	function submitFun(name) {
 		var f = document.getElementById(name);
 		f.submit();
+	}
+	function setPageIdx(add) {
+		if (add == true)
+			page_idx++;
+		else
+			page_idx--;
+		document.getElementById("page_idx").value = page_idx;
 	}
 </script>
 </head>
@@ -158,21 +177,21 @@ label.text {
 								全部动漫信息检索页 <br /> <small>使用作品名、制作商、作者检索动漫作品的基本信息。通过基本信息可以查看详细信息。</small>
 							</h3>
 						</div>
-							<form role="form" action="AnimeHelper" method="POST" id="form_set"
-								id="form_anime">
-						<div class="panel panel-primary" style="background: #E9EEEE">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapseOne" id="query_condition"> 查询条件 <script>
-											document
-													.getElementById("query_condition").innerHTML = window
-													.loadArrow();
-										</script>
-									</a>
-								</h4>
-							</div>
-							
+						<form role="form" action="AnimeHelper" method="POST" id="form_set"
+							id="form_anime">
+							<div class="panel panel-primary" style="background: #E9EEEE">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion"
+											href="#collapseOne" id="query_condition"> 查询条件 <script>
+												document
+														.getElementById("query_condition").innerHTML = window
+														.loadArrow();
+											</script>
+										</a>
+									</h4>
+								</div>
+
 
 								<div id="collapseOne" class="panel-collapse collapse in">
 									<div class="panel-body">
@@ -238,56 +257,76 @@ label.text {
 
 									</div>
 								</div>
-							
-						</div>
 
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-
-								<h4 class="panel-title">
-									查询结果 <span style="float: right"> <label for="name">每页显示</label>
-										<select class="form-control" name="page_content_number"
-										style="max-height: 30px;" onchange="submitFun('form_set')">
-											<option value="5" ${page_content_number=="5"?'selected':''}>5</option>
-											<option value="10" ${page_content_number=="10"?'selected':''}>10</option>
-											<option value="25" ${page_content_number=="25"?'selected':''}>25</option>
-											<option value="50" ${page_content_number=="50"?'selected':''}>50</option>
-									</select>
-									</span>
-								</h4>
 							</div>
-							<div class="panel-body">
-								<div class="table-responsive">
-									<table class="table table-hover table-bordered">
-										<tr class="info">
-											<c:forEach var="col_name"
-												items="${requestScope.QueryHeader }">
-												<th>${col_name }</th>
-											</c:forEach>
-										</tr>
-										<c:forEach var="item" items="${requestScope.QueryResult }">
-											<tr>
-												<c:forEach var="str" items="${item }">
-													<td>${str }</td>
+
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+
+									<h4 class="panel-title">
+										查询结果 <span style="float: right" class="controls-row"> <!-- <label for="page_content_number" >每页显示</label> -->
+											<select class="form-control" name="page_content_number"
+											style="max-height: 30px;" onchange="submitFun('form_set')">
+												<option value="5" ${page_content_number=="5"?'selected':''}>每页5项</option>
+												<option value="10"
+													${page_content_number=="10"?'selected':''}>每页10项</option>
+												<option value="25"
+													${page_content_number=="25"?'selected':''}>每页25项</option>
+												<option value="50"
+													${page_content_number=="50"?'selected':''}>每页50项</option>
+										</select>
+										</span>
+									</h4>
+								</div>
+								<div class="panel-body">
+									<div class="table-responsive">
+										<table class="table table-hover table-bordered">
+											<tr class="info">
+												<c:forEach var="col_name"
+													items="${requestScope.QueryHeader }">
+													<th>${col_name }</th>
 												</c:forEach>
 											</tr>
+											<c:forEach var="item" items="${requestScope.QueryResult }">
+												<tr>
+													<c:forEach var="str" items="${item }">
+														<td>${str }</td>
+													</c:forEach>
+												</tr>
+											</c:forEach>
+										</table>
+									</div>
+									<%-- 									<ul class="pagination">
+										<li><a
+											href="?page_idx=1&page_content_number=${page_content_number}" onclick="submitFun('form_set')">&laquo;</a></li>
+										<c:forEach var="page_idx" begin="1"
+											end="${requestScope.ResultPageCount }">
+											<li ${page_idx==requestScope["page_idx"]?'class="active"':''}><a
+												href="#" onclick="submitFun('form_set')">${page_idx}</a></li>
 										</c:forEach>
-									</table>
+										<li><a
+											href="?page_idx=${requestScope.ResultPageCount}&page_content_number=${page_content_number}"onclick="submitFun('form_set')">&raquo;</a></li>
+									</ul> --%>
+
+									<div class="row txt">
+										<input type="hidden" id="page_idx" name="page_idx"
+											placeholder="请输入名称" value="">
+										<button type="submit" class="btn btn-link col-md-5"
+											onclick="setPageIdx(false)" ${page_idx==1?'disabled':''}>
+											&larr; Older</button>
+
+										<strong><span class="label label-info col-md-2" style="min-height:10px;">${page_idx } 页 / ${ResultPageCount} 页</span></strong>
+
+										<button type="submit" class="btn btn-link col-md-5"
+											onclick="setPageIdx(true)" style="float: right;"
+											${page_idx==ResultPageCount?'disabled':'' }>Newer
+											&rarr;</button>
+									</div>
+
+									<h4>${requestScope.SQL}</h4>
+									<!-- <h4><script>alert(getPageIdx())</script></h4> -->
 								</div>
-								<ul class="pagination">
-									<li><a
-										href="?page_idx=1&page_content_number=${page_content_number}">&laquo;</a></li>
-									<c:forEach var="page_idx" begin="1"
-										end="${requestScope.ResultPageCount }">
-										<li ${page_idx==requestScope["page_idx"]?'class="active"':''}><a
-											href="?page_idx=${page_idx }&page_content_number=${page_content_number}">${page_idx}</a></li>
-									</c:forEach>
-									<li><a
-										href="?page_idx=${requestScope.ResultPageCount}&page_content_number=${page_content_number}">&raquo;</a></li>
-								</ul>
-								<h4>${requestScope.SQL}</h4>
 							</div>
-						</div>
 						</form>
 					</div>
 					<div class="tab-pane fade" id="airgoing">

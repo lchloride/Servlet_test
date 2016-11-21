@@ -68,7 +68,7 @@ public class AnimeManager {
 
 		Object[] query_result = dao.find(para);
 		column_name = ((List<String>) query_result[0]);
-		System.out.println(column_name);
+		//System.out.println(column_name);
 		refineColName(column_name, parameter);
 		anime_list = (List<Anime>) query_result[1];
 

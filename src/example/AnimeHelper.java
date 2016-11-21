@@ -44,7 +44,7 @@ public class AnimeHelper extends HttpServlet {
 				String paraValue = paraValues[0];
 				para.put(paraName, new String(paraValue.getBytes("iso8859-1"), "UTF-8"));
 			}
-			
+			System.out.println(para);			
 			try {
 				para.put("page_content_number", Integer.parseInt(request.getParameter("page_content_number"))); 				
 			} catch (NumberFormatException e) {
@@ -58,7 +58,7 @@ public class AnimeHelper extends HttpServlet {
 				para.put("page_idx",1);
 			}
 			am.setParameter(para);
-			
+			System.out.println(para);
 			Object[] result = null;
 			result = am.findAllAnime();
 			for (Entry<String, Object> entry : para.entrySet()) {
