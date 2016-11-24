@@ -1,4 +1,4 @@
-package example;
+package anime;
 
 import java.util.List;
 

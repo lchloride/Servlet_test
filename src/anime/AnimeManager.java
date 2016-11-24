@@ -1,4 +1,4 @@
-package example;
+package anime;
 
 import java.util.*;
 import java.util.Map.Entry;

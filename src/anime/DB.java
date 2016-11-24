@@ -1,4 +1,4 @@
-package example;
+package anime;
 
 import java.sql.*;
 import java.util.ArrayList;
