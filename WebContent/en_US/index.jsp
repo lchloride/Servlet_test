@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@  taglib  uri="http://java.sun.com/jsp/jstl/functions"   prefix="fn"%>
 <!DOCTYPE html>
 <!-- This is a English Page of Index.jsp -->
 <html lang="zh-CN">
@@ -41,6 +42,7 @@ label.text {
 	background-size: cover
 }
 
+@media (min-width: 768px) {
 .mainbody {
 	margin-top: auto;
 	margin-bottom: 50px;
@@ -49,6 +51,19 @@ label.text {
 	font-family: Tahoma, "Microsoft YaHei", sans-serif;
 	background: #E0FFFF;
 	padding-bottom: 50px;
+
+}
+}
+@media (max-width: 767px) {
+.mainbody {
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-right: 5px;
+	margin-left: 5px;
+	font-family: Tahoma, "Microsoft YaHei", sans-serif;
+	background: #E0FFFF;
+	padding-bottom: 50px;
+}
 }
 
 .result {
@@ -63,6 +78,12 @@ label.text {
 	border-left-width: thin;
 	border-left-color: #CFCFCF;
 	padding-right: 5%;
+}
+
+@media (max-width: 767px) {
+.querypart{
+	padding-left: 5%;
+}
 }
 
 .txt {
@@ -153,7 +174,7 @@ label.text {
 		</nav>
 
 		<div class="row">
-			<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-2">
 				<ul id="myTab" class="nav nav-tabs nav-stacked">
 					<li class="disabled"><a data-toggle="tab"
 						style="font-size: 1.25em">Search Information</a></li>
@@ -178,11 +199,11 @@ label.text {
 					<li class="active"><a data-toggle="tab"
 						style="font-size: 1.25em">Edit Information</a></li>
 					<li class="active"><a data-toggle="tab"
-						style="font-size: 1.25em">Suggestion & Feedback</a></li>
+						style="font-size: 1.25em">Suggestion &amp; Feedback</a></li>
 				</ul>
 			</div>
 
-			<div class=" col-lg-9 col-md-9 col-sm-9 querypart" style="">
+			<div class=" col-lg-9 col-md-9 col-sm-9 col-xs-10 querypart" style="">
 				<div id="myTabContent" class="tab-content">
 					<div class="tab-pane fade in active" id="all_work">
 						<div class="page-header" style="">
@@ -190,7 +211,8 @@ label.text {
 								Entire Anime Searching Page <br /> <small>Query basic anime information by its name, production company and writer.</small>
 							</h3>
 						</div>
-						<form role="form" action="AnimeHelper" method="POST" id="form_set"
+
+						<form role="form" action="/AnimeHelper/en_US/AnimeHelper" method="POST" id="form_set"
 							onsubmit="return checkSubmit()">
 							<div class="panel panel-primary" style="background: #E9EEEE">
 								<div class="panel-heading">
@@ -218,13 +240,13 @@ label.text {
 										<div class="form-group">
 											<label class="text" for="product_company">Production Company</label> <input
 												type="text" class="form-control" id="product_company"
-												name="Text_company" placeholder="Please input anime name, leave it as it is if not be specified."
+												name="Text_company" placeholder="Please input production company, leave it as it is if not be specified."
 												value="${Text_company}">
 										</div>
 										<div class="form-group">
 											<label class="text" for="writer_name">Writer</label> <input
 												type="text" class="form-control" id="writer_name"
-												name="Text_writer_name" placeholder="Please input anime name, leave it as it is if not be specified."
+												name="Text_writer_name" placeholder="Please input writer's name, leave it as it is if not be specified."
 												value="${Text_writer_name}">
 										</div>
 										<label class="text" for="anime_name">Displayed Column</label>
@@ -293,7 +315,7 @@ label.text {
 								</div>
 								<div class="panel-body">
 									<c:choose>
-										<c:when test="${!empty page_idx && page_idx > 0}">
+										<c:when test="${!empty ResultPageCount && ResultPageCount > 0}">
 											<div class="table-responsive">
 
 												<table class="table table-hover table-bordered">

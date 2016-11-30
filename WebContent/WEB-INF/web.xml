@@ -38,7 +38,7 @@
   <servlet>
     <display-name>AnimeHelper</display-name>
     <servlet-name>AnimeHelper</servlet-name>
-    <servlet-class>anime.AnimeHelper</servlet-class>
+    <servlet-class>anime.web.AnimeHelper</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AnimeHelper</servlet-name>
@@ -46,11 +46,23 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>AnimeHelper</servlet-name>
+    <url-pattern>/zh_CN/AnimeHelper</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AnimeHelper</servlet-name>
     <url-pattern>/en_US</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>AnimeHelper</servlet-name>
+    <url-pattern>/en_US/AnimeHelper</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AnimeHelper</servlet-name>
     <url-pattern>/ja_JP</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AnimeHelper</servlet-name>
+    <url-pattern>/ja_JP/AnimeHelper</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
@@ -59,16 +71,4 @@
   <session-config>
     <session-timeout>5</session-timeout>
   </session-config>
-  <filter>
-	<filter-name>LanguageFilter</filter-name>
-	<filter-class>anime.LanguageFilter</filter-class>
-	<init-param>
-		<param-name>Site</param-name>
-		<param-value>菜鸟教程</param-value>
-	</init-param>
-	</filter>
-	<filter-mapping>
-  <filter-name>LanguageFilter</filter-name>
-  <url-pattern></url-pattern>
-</filter-mapping>
 </web-app>

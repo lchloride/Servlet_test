@@ -1,4 +1,4 @@
-package anime;
+package anime.web;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,10 +35,24 @@ public class AnimeHelper extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		AnimeManager am = AnimeManager.getInstance();
-		Map<String, Object> para = new HashMap<String, Object>();
+		Map<String, String> para = new HashMap<String, String>();
 		Enumeration<?> paraNames = request.getParameterNames();
-		String dispatchURL = "en_US/index.jsp";;
-		
+		String dispatchURL = "en_US/index.jsp";
+
+		Locale loc = request.getLocale();
+		// If user assign display language, just load matched one, not display
+		// in default language
+		String[] request_url = request.getRequestURI().split("/");
+		for (int i = 0; i < request_url.length; i++) {
+			if (request_url[i].matches("[a-zA-Z]{2,8}_([a-zA-Z]{2}|[0-9]{3})")) {
+				String[] lang = request_url[i].split("_");
+				loc = new Locale(lang[0], lang[1]);
+				break;
+			}
+		}
+
+		// Put all parameters from request into a Map transferred to
+		// AnimeManager
 		while (paraNames.hasMoreElements()) {
 			String paraName = (String) paraNames.nextElement();
 			String[] paraValues = request.getParameterValues(paraName);
@@ -47,41 +60,35 @@ public class AnimeHelper extends HttpServlet {
 			para.put(paraName, new String(paraValue.getBytes("iso8859-1"), "UTF-8"));
 		}
 		System.out.println(para);
-		if (para.size() > 0) {
-			try {
-				para.put("page_content_number", Integer.parseInt(request.getParameter("page_content_number")));
-			} catch (NumberFormatException e) {
-				// TODO: handle exception
-				para.put("page_content_number", 5);
-			}
-			try {
-				para.put("page_idx", Integer.parseInt(request.getParameter("page_idx")));
-			} catch (NumberFormatException e) {
-				// TODO: handle exception
-				para.put("page_idx", 1);
-			}
-			am.setParameter(para);
-			System.out.println(para);
 
-			Object[] result = null;
-			result = am.findAllAnime();
-			for (Entry<String, Object> entry : para.entrySet()) {
-				request.setAttribute(entry.getKey(), entry.getValue());
-			}
+		// Set language of request to parameter in order to load proper language
+		// resources. Language must be one of English(America),
+		// Chinese(Simplified) and Japanese(Japan). If it cannot be matched,
+		// default language is English(America).
+		if (loc.toString().matches("en_US|zh_CN|ja_JP"))
+			para.put("location", loc.toString());
+		else
+			para.put("location", "en_US");
+		
+		//Transfer parameters to AnimeManager
+		am.setParameter(para);
 
-			request.setAttribute("QueryHeader", result[0]);
-			request.setAttribute("QueryResult", result[1]);
-			request.setAttribute("result", true);
-			request.setAttribute("ResultPageCount",
-					(int) Math.ceil((double) am.getAnimeRowsNumber() / am.getPageContentNumber()));
-			request.setAttribute("SQL", result[2]);
-		} else {
-			request.setAttribute("result", false);
-			Locale loc = request.getLocale();
-			System.out.println(loc.toString()+" match="+loc.toString().matches("en_US|zh_CN|ja_JP"));
-			if (loc.toString().matches("en_US|zh_CN|ja_JP"))
-				dispatchURL = loc.toString()+"/index.jsp";
+		// Process query
+		Map<String, Object> result = null;
+		result = am.findAllAnime();
+
+		// Set parameters from request to form response
+		for (Entry<String, String>entry: para.entrySet()) {
+			request.setAttribute(entry.getKey(), entry.getValue());
 		}
+		
+		// Set query result as several attributes to response
+		for (Entry<String, Object> entry : result.entrySet()) {
+			request.setAttribute(entry.getKey(), entry.getValue());
+		}
+
+		//Forward result to assigned page
+		dispatchURL = (String) result.get("DispatchURL");
 		RequestDispatcher dispatcher = request.getRequestDispatcher(dispatchURL);
 		dispatcher.forward(request, response);
 

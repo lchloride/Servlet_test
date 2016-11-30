@@ -41,6 +41,7 @@ label.text {
 	background-size: cover
 }
 
+@media (min-width: 768px) {
 .mainbody {
 	margin-top: auto;
 	margin-bottom: 50px;
@@ -49,6 +50,19 @@ label.text {
 	font-family: Tahoma, "Microsoft YaHei", sans-serif;
 	background: #E0FFFF;
 	padding-bottom: 50px;
+
+}
+}
+@media (max-width: 767px) {
+.mainbody {
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-right: 5px;
+	margin-left: 5px;
+	font-family: Tahoma, "Microsoft YaHei", sans-serif;
+	background: #E0FFFF;
+	padding-bottom: 50px;
+}
 }
 
 .result {
@@ -63,6 +77,12 @@ label.text {
 	border-left-width: thin;
 	border-left-color: #CFCFCF;
 	padding-right: 5%;
+}
+
+@media (max-width: 767px) {
+.querypart{
+	padding-left: 5%;
+}
 }
 
 .txt {
@@ -190,7 +210,7 @@ label.text {
 								全部动漫信息检索页 <br /> <small>使用作品名、制作商、作者检索动漫作品的基本信息。通过基本信息可以查看详细信息。</small>
 							</h3>
 						</div>
-						<form role="form" action="zh_CN" method="POST" id="form_set"
+						<form role="form" action="/AnimeHelper/zh_CN/AnimeHelper" method="POST" id="form_set"
 							onsubmit="return checkSubmit()">
 							<div class="panel panel-primary" style="background: #E9EEEE">
 								<div class="panel-heading">

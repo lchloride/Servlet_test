@@ -87,34 +87,39 @@ public class Anime {
 		setDirectorName(dn);
 		setScriptwriterName(sn);
 	}
-
-	public ArrayList<Object> format(Map<String, Object> para) {
+	
+	/*
+	 * This method is to format an ArrayList using an anime object and specific parameters
+	 * @param para stands for the column that users want to display
+	 * @return an ArrayList  
+	 */
+	public ArrayList<Object> format(Map<String, String> para) {
 		ArrayList<Object> item_list = new ArrayList<Object>();
 		if (para.containsKey("Checkbox_anime_name")
-				&& ((String) para.get("Checkbox_anime_name")).equalsIgnoreCase("on")) {
+				&& (para.get("Checkbox_anime_name")).equalsIgnoreCase("on")) {
 			item_list.add(anime_name);
 		}
 		if (para.containsKey("Checkbox_start_time")
-				&& ((String) para.get("Checkbox_start_time")).equalsIgnoreCase("on")) {
+				&& (para.get("Checkbox_start_time")).equalsIgnoreCase("on")) {
 			item_list.add(start_time);
 		}
-		if (para.containsKey("Checkbox_company") && ((String) para.get("Checkbox_company")).equalsIgnoreCase("on")) {
+		if (para.containsKey("Checkbox_company") && (para.get("Checkbox_company")).equalsIgnoreCase("on")) {
 			item_list.add(company);
 		}
 		if (para.containsKey("Checkbox_writer_name")
-				&& ((String) para.get("Checkbox_writer_name")).equalsIgnoreCase("on")) {
+				&& (para.get("Checkbox_writer_name")).equalsIgnoreCase("on")) {
 			item_list.add(writer_name);
 		}
 		if (para.containsKey("Checkbox_episode_number")
-				&& ((String) para.get("Checkbox_episode_number")).equalsIgnoreCase("on")) {
+				&& (para.get("Checkbox_episode_number")).equalsIgnoreCase("on")) {
 			item_list.add(episode_number);
 		}
 		if (para.containsKey("Checkbox_director_name")
-				&& ((String) para.get("Checkbox_director_name")).equalsIgnoreCase("on")) {
+				&& (para.get("Checkbox_director_name")).equalsIgnoreCase("on")) {
 			item_list.add(director_name);
 		}
 		if (para.containsKey("Checkbox_scriptwriter_name")
-				&& ((String) para.get("Checkbox_scriptwriter_name")).equalsIgnoreCase("on")) {
+				&& (para.get("Checkbox_scriptwriter_name")).equalsIgnoreCase("on")) {
 			item_list.add(scriptwriter_name);
 		}
 		return item_list;

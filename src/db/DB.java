@@ -1,4 +1,4 @@
-package anime;
+package db;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +9,15 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import anime.dao.Store;
+
+/*
+ * This class is a tool class only to offer database operations
+ */
 public class DB {
+	/*
+	 * This method will obtain an available connection and return it. 
+	 */
 	public static Connection getConn() throws NamingException, SQLException {
 		Connection conn = null;
 		Context ctx = new InitialContext();
@@ -18,7 +26,7 @@ public class DB {
 		// 参数jdbc/mysqlds为数据源和JNDI绑定的名字
 		DataSource ds = (DataSource) envContext.lookup("jdbc/mysqlds");
 		conn = ds.getConnection();
-		System.out.println(conn.toString() + "<span style='color:red;'>JNDI测试成功<span>");
+		//System.out.println(conn.toString() + "<span style='color:red;'>JNDI测试成功<span>");
 
 		return conn;
 	}
@@ -26,7 +34,13 @@ public class DB {
 	public static void closeConn(Connection conn) throws SQLException {
 		conn.close();
 	}
-
+	
+	/*
+	 * This method executes a SQL sentence and generates a list of query result of object
+	 * @param sql is query sentence
+	 * @param method indicates the method of Store interface
+	 * @return a set of column names, result content
+	 */
 	public static <T> Object[] execSQL(String sql, Store<T> method) {
 		List<T> form = new ArrayList<T>();
 		List<String> col_name = new ArrayList<>();
@@ -53,7 +67,7 @@ public class DB {
 				item_obj = method.format(item);
 				form.add(item_obj);
 			}
-			System.out.println("queryzise:"+form.size());
+			//System.out.println("querysize:"+form.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

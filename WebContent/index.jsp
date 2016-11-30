@@ -15,19 +15,25 @@
 	if (loc.toString().compareTo("zh_CN")==0) {
 		out.println("检测到语言为中文，重定向至中文页面......");
 		   String site = new String("zh_CN");
-		   response.setStatus(response.SC_MOVED_TEMPORARILY);
-		   response.setHeader("Location", site); 
+		  // response.setStatus(response.SC_MOVED_TEMPORARILY);
+		   //response.setHeader("Location", site);
+		   response.sendRedirect(site);
 	}else if (loc.toString().compareTo("ja_JP")==0) {
-		out.println("Detect English as language, redirect to English page......");
+		out.println("日本語の言葉を検出、日本語ページまでリダイレクトします......");   
 		   String site = new String("ja_JP");
-		   response.setStatus(response.SC_MOVED_TEMPORARILY);
-		   response.setHeader("Location", site); 
+		  // response.setStatus(response.SC_MOVED_TEMPORARILY);
+		   //response.setHeader("Location", site);
+		   response.sendRedirect(site);
 	}
 	else {
-		out.println("日本語の言葉を検出、日本語ページまでリダイレクトします......");   
+		out.println("Detect English as language, redirect to English page......");
 		String site = new String("en_US");
-		   response.setStatus(response.SC_MOVED_TEMPORARILY);
-		   response.setHeader("Location", site); 
+		String contextPath = request.getContextPath()+site; 
+		//request.setAttribute("contextPath", contextPath);
+		//System.out.println(contextPath);
+		   //response.setStatus(response.SC_MOVED_TEMPORARILY);
+		   //response.setHeader("Location", site);
+		response.sendRedirect(site);
 	}
 %>
 </body>

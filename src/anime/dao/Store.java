@@ -1,4 +1,4 @@
-package anime;
+package anime.dao;
 
 import java.util.List;
 
