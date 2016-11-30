@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@  taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 <!DOCTYPE html>
-<!-- 这是个中文的index.jsp网页 -->
+<!-- This is a English Page of Index.jsp -->
 <html lang="zh-CN">
 <head>
 <title>AnimeHelper</title>
@@ -37,32 +39,33 @@ label.text {
 }
 
 .body {
-	background: #2d3b36 url(/AnimeHelper/image/bg.jpg) no-repeat bottom right fixed;
+	background: #2d3b36 url(/AnimeHelper/image/bg.jpg) no-repeat bottom
+		right fixed;
 	background-size: cover
 }
 
-@media (min-width: 768px) {
-.mainbody {
-	margin-top: auto;
-	margin-bottom: 50px;
-	margin-right: 10%;
-	margin-left: 10%;
-	font-family: Tahoma, "Microsoft YaHei", sans-serif;
-	background: #E0FFFF;
-	padding-bottom: 50px;
+@media ( min-width :768px) {
+	.mainbody {
+		margin-top: auto;
+		margin-bottom: 50px;
+		margin-right: 10%;
+		margin-left: 10%;
+		font-family: Tahoma, "Microsoft YaHei", sans-serif;
+		background: #E0FFFF;
+		padding-bottom: 50px;
+	}
+}
 
-}
-}
-@media (max-width: 767px) {
-.mainbody {
-	margin-top: auto;
-	margin-bottom: auto;
-	margin-right: 5px;
-	margin-left: 5px;
-	font-family: Tahoma, "Microsoft YaHei", sans-serif;
-	background: #E0FFFF;
-	padding-bottom: 50px;
-}
+@media ( max-width : 767px) {
+	.mainbody {
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-right: 5px;
+		margin-left: 5px;
+		font-family: Tahoma, "Microsoft YaHei", sans-serif;
+		background: #E0FFFF;
+		padding-bottom: 50px;
+	}
 }
 
 .result {
@@ -79,10 +82,10 @@ label.text {
 	padding-right: 5%;
 }
 
-@media (max-width: 767px) {
-.querypart{
-	padding-left: 5%;
-}
+@media ( max-width : 767px) {
+	.querypart {
+		padding-left: 5%;
+	}
 }
 
 .txt {
@@ -129,7 +132,8 @@ label.text {
 	function submitFun(name) {
 		var f = document.getElementById(name);
 		f.submit();
-	}
+
+}
 	function setPageIdx(add) {
 		if (add == true)
 			page_idx++;
@@ -211,6 +215,7 @@ label.text {
 							</h3>
 						</div>
 						<form role="form" action="/AnimeHelper/zh_CN/AnimeHelper" method="POST" id="form_set"
+
 							onsubmit="return checkSubmit()">
 							<div class="panel panel-primary" style="background: #E9EEEE">
 								<div class="panel-heading">
