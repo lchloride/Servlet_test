@@ -12,6 +12,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import user.UserManager;
 
 /**
  * Servlet implementation class DatabaseAccess
@@ -34,6 +36,8 @@ public class AnimeHelper extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		System.out.println("anime "+session.getAttribute("username")+" "+session.getAttribute("password")+" "+session.getId());
 		AnimeManager am = AnimeManager.getInstance();
 		Map<String, String> para = new HashMap<String, String>();
 		Enumeration<?> paraNames = request.getParameterNames();
@@ -70,6 +74,11 @@ public class AnimeHelper extends HttpServlet {
 		else
 			para.put("location", "en_US");
 		
+		if (UserManager.checkLogin(session.getAttribute("username"), session.getAttribute("password")))
+			para.put("isLogin", "True");
+		else
+			para.put("isLogin", "False");
+		
 		//Transfer parameters to AnimeManager
 		am.setParameter(para);
 
@@ -86,7 +95,7 @@ public class AnimeHelper extends HttpServlet {
 		for (Entry<String, Object> entry : result.entrySet()) {
 			request.setAttribute(entry.getKey(), entry.getValue());
 		}
-
+		
 		//Forward result to assigned page
 		dispatchURL = (String) result.get("DispatchURL");
 		RequestDispatcher dispatcher = request.getRequestDispatcher(dispatchURL);

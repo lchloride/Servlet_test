@@ -9,26 +9,22 @@
 	charset="UTF-8">
 <title>Login -- AnimeHelper</title>
 
-<link rel="icon" href="../image/page-icon.ico" type="image/x-ico" />
+<link rel="icon" href="/AnimeHelper/image/page-icon.ico" type="image/x-ico" />
 <!-- 新 Bootstrap 核心 CSS 文件 -->
-<link
-	href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"
+<link href="/AnimeHelper/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-<script
-	src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="/AnimeHelper/bootstrap/js/jquery.min.js"></script>
 
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script
-	src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/AnimeHelper/bootstrap/js/bootstrap.min.js"></script>
 <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
 <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
 <!--[if lt IE 9]>
          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-      <![endif]-->
-</head>
+<![endif]-->
 <style type="text/css">
 .body {
 	background: #2d3b36 url(/AnimeHelper/image/bg.jpg) no-repeat bottom
@@ -65,6 +61,26 @@
 	padding-right: 5%;
 }
 </style>
+<script>
+	function checkSubmit(id) {
+		var username = document.getElementById("username").value;
+		var password = document.getElementById("password").value;
+
+		if (username == "") {
+			alert("用户名不能为空");
+			return false;
+		}
+		if (password == "") {
+			alert("密码不能为空");
+			return false;
+		}
+		document.getElementById("lastURL").value = document.referrer;
+		document.getElementById(id).submit();
+	}
+</script>
+</head>
+
+
 <body class="body">
 	<div class="mainbody">
 		<nav class="navbar navbar-default" role="navigation">
@@ -90,7 +106,7 @@
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 5%">
 						<li><a href="#"><span class="glyphicon glyphicon-user"></span>
 								Register</a></li>
-						<li class="active"><a href="#"><span
+						<li class="active"><a href="login"><span
 								class="glyphicon glyphicon-log-in"></span> Login</a></li>
 					</ul>
 				</div>
@@ -105,8 +121,12 @@
 
 			<br />
 
-			<form role="form" action="/AnimeHelper/en_US/AnimeHelper" method="POST" id="form_login"
-							onsubmit="">
+			<form role="form" action="/AnimeHelper/en_US/login" method="POST"
+				id="form_login" onsubmit="return checkSubmit(form_login)">
+				<c:if test="${not empty isLogin and isLogin == false }">
+					<div class="text-danger">Username(ID) OR password is wrong!</div>
+				</c:if>
+				<input type="hidden" value="" id="lastURL" name="LastURL">
 				<div class="form-group">
 					<label class="text" for="username">Username/ID</label> <input
 						type="text" class="form-control" id="username"
@@ -153,7 +173,7 @@
 					</div>
 				</div>
 
-				<button type="submit" class="btn btn-primary" >Login</button>
+				<button type="submit" class="btn btn-primary">Login</button>
 			</form>
 
 		</div>

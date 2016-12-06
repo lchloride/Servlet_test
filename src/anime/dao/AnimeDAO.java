@@ -66,7 +66,7 @@ public class AnimeDAO implements Store<Anime>{
 	 */
 	public int getRowsNumber(String table_name) throws NamingException, SQLException {
 		String sql = "select ROWS_NUM from info where TABLE_NAME=\""+table_name+"\";";
-		List<Object> result = DB.execSQL(sql);
+		List<Object> result = DB.execSQL(sql).get(0);//Only process the first line
 		return (int) result.get(0);
 	}
 

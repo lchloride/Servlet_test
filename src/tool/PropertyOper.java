@@ -64,8 +64,6 @@ public class PropertyOper {
 		InputStream in = new FileInputStream(filePath);
 		// 从输入流中读取属性列表（键和元素对）
 		pps.load(in);
-//		String filename = "anime/"+filePath;  
-//		System.out.println(filename);
 //        pps.load(PropertyOper.class.getClassLoader().getResourceAsStream(filename));  
 		// 调用 Hashtable 的方法 put。使用 getProperty 方法提供并行性。
 		// 强制要求为属性的键和值使用字符串。返回值是 Hashtable 调用 put 的结果。
@@ -78,12 +76,5 @@ public class PropertyOper {
 		// 将此 Properties 表中的属性列表（键和元素对）写入输出流
 		pps.store(out, "Update " + "" + " name");		
 		GetAllProperties(filePath);
-
 	}
-	// public static void main(String [] args) throws IOException{
-	// String value = GetValueByKey("Test.properties", "name");
-	// System.out.println(value);
-	// GetAllProperties("Test.properties");
-	// WriteProperties("Test.properties","long", "212");
-	// }
 }

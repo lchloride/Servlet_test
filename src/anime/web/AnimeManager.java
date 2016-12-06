@@ -13,6 +13,9 @@ public class AnimeManager {
 	private Map<String, String> column_name_trans;
 	private Map<String, String> parameter = null;
 	private AnimeDAO dao = null;
+	final int BASIC_PARA_COUNT = 2;
+	final int DEFAULT_PAGE_CONTENT_NUMBER = 5;
+	final int DEFAULT_PAGE_IDX = 1;
 
 	public AnimeManager() {
 		// TODO Auto-generated constructor stub
@@ -34,16 +37,19 @@ public class AnimeManager {
 		List<Anime> anime_list = null;
 		List<String> column_name = null;
 		List<List<Object>> anime_form = null;
-
+		boolean isLogin = false;
+		if (parameter.get("isLogin").contentEquals("True"))
+			isLogin = true;
+		
 		// Condition that para.size() is large than 0 means there are several
 		// parameters transferred from index.jsp
 		// and project should process this query; if para.size() is equal to 0,
 		// it means that there are no valid parameters
 		// from index.jsp, which is usually under the circumstance of first file
 		// loading process
-		if (parameter.size() > 1) {
+		if (parameter.size() > BASIC_PARA_COUNT) {
 			Map<String, String> para = new HashMap<>();
-			int page_content_number = 5, page_idx = 1;
+			int page_content_number = DEFAULT_PAGE_CONTENT_NUMBER, page_idx = DEFAULT_PAGE_IDX;
 
 			// Form a new parameter list to DAO
 			for (Entry<String, String> entry : parameter.entrySet()) {
@@ -54,13 +60,13 @@ public class AnimeManager {
 				page_content_number = Integer.parseInt(parameter.get("page_content_number"));
 			} catch (NumberFormatException e) {
 				// TODO: handle exception
-				page_content_number = 5;
+				page_content_number = DEFAULT_PAGE_CONTENT_NUMBER;
 			}
 			try {
 				page_idx = Integer.parseInt(parameter.get("page_idx"));
 			} catch (NumberFormatException e) {
 				// TODO: handle exception
-				page_idx = 1;
+				page_idx = DEFAULT_PAGE_IDX;
 			}
 			para.put("limit_st", String.valueOf(page_content_number * (page_idx - 1)));
 			para.put("page_content_number", String.valueOf(page_content_number));
@@ -87,11 +93,11 @@ public class AnimeManager {
 			// Format a map to store all parameters sending back to index.jsp
 			return formatFindAllResult(true, "index.jsp", column_name, anime_form,
 					(int) Math.ceil((double) anime_rows_number / page_content_number), page_content_number, page_idx,
-					dao.sql);
+					isLogin, dao.sql);
 		} else {
 			// Format a map to store all parameters sending back to
 			// "loc+index.jsp", when first calling this method
-			return formatFindAllResult(false, (String) parameter.get("location") + "/index.jsp");
+			return formatFindAllResult(false, (String) parameter.get("location") + "/index.jsp", isLogin);
 		}
 	}
 
@@ -155,7 +161,7 @@ public class AnimeManager {
 	 * @return a map, storing all the parameters that will be sent to front side
 	 */
 	private Map<String, Object> formatFindAllResult(Boolean result_flag, String dispatchURL, List<String> col_name,
-			List<List<Object>> query_result, int page_result_count, int page_content, int page_idx, String sql) {
+			List<List<Object>> query_result, int page_result_count, int page_content, int page_idx, boolean isLogin, String sql) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("result", true);
 		result.put("DispatchURL", dispatchURL);
@@ -164,6 +170,7 @@ public class AnimeManager {
 		result.put("ResultPageCount", page_result_count);
 		result.put("page_content_number", page_content);
 		result.put("page_idx", page_idx);
+		result.put("isLogin", isLogin);
 		result.put("SQL", sql);
 		return result;
 	}
@@ -178,11 +185,12 @@ public class AnimeManager {
 	 * 
 	 * @param dispatchURL points out the front page that will display the result
 	 */
-	private Map<String, Object> formatFindAllResult(Boolean result_flag, String dispatchURL) {
+	private Map<String, Object> formatFindAllResult(Boolean result_flag, String dispatchURL, boolean isLogin) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("result", false);
 		result.put("DispatchURL", dispatchURL);
 		result.put("ResultPageCount", 0);
+		result.put("isLogin", isLogin);
 		return result;
 	}
 }
