@@ -45,11 +45,7 @@
 		<servlet-name>AnimeHelper</servlet-name>
 		<servlet-class>anime.web.AnimeHelper</servlet-class>
 	</servlet>
-	<servlet>
-		<display-name>UserServlet</display-name>
-		<servlet-name>UserServlet</servlet-name>
-		<servlet-class>user.UserServ</servlet-class>
-	</servlet>
+
 
 	<servlet-mapping>
 		<servlet-name>AnimeHelper</servlet-name>
@@ -75,15 +71,20 @@
 		<servlet-name>AnimeHelper</servlet-name>
 		<url-pattern>/ja_JP/AnimeHelper</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<display-name>UserServlet</display-name>
+		<servlet-name>UserServlet</servlet-name>
+		<servlet-class>user.UserServ</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserServlet</servlet-name>
 		<url-pattern>/en_US/login</url-pattern>
 	</servlet-mapping>
-		<servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>UserServlet</servlet-name>
 		<url-pattern>/en_US/logout</url-pattern>
 	</servlet-mapping>
-	
+
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 		<welcome-file>/zh_CN/Error.html</welcome-file>

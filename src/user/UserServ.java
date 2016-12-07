@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
 // @WebServlet("/UserServ")
 public class UserServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final int DEFAULT_PARA_COUNT = 2;
+	private final int DEFAULT_PARA_COUNT = 2;//DEFAULT_PARA_COUNT indicates the number of default parameters obtained by system
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -38,11 +38,16 @@ public class UserServ extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		// 如果不存在 session 会话，则创建一个 session 对象
+		
+		// Create a session if it does not exist
 		HttpSession session = request.getSession(true);
+		//Object that manages user
 		UserManager um = UserManager.getInstance();
+		//Parameters sent to UserManager
 		Map<String, String> para = new HashMap<String, String>();
+		//Name list that get from front side
 		Enumeration<?> paraNames = request.getParameterNames();
+		//Default diapatching URL
 		String dispatchURL = "loginsucc.jsp";
 
 		Locale loc = request.getLocale();
@@ -58,7 +63,7 @@ public class UserServ extends HttpServlet {
 		}
 
 		// Put all parameters from request into a Map transferred to
-		// AnimeManager
+		// UserManager
 		while (paraNames.hasMoreElements()) {
 			String paraName = (String) paraNames.nextElement();
 			String[] paraValues = request.getParameterValues(paraName);
@@ -76,26 +81,29 @@ public class UserServ extends HttpServlet {
 		else
 			para.put("location", "en_US");
 
-		// Transfer parameters to AnimeManager
+		// Transfer parameters to UserManager
 		um.setParameter(para);
 
 		Map<String, Object> result = new HashMap<>();
 
-		// Obtain operation
+		// Obtain operation string
 		String query_url = request.getServletPath();
 		query_url = query_url.substring(query_url.lastIndexOf('/')+1);
 		
-		if (query_url.contentEquals("login")) {
+		if (query_url.contentEquals("login")) {//Login operation
 			System.out.println("login " + session.getAttribute("username") + " " + session.getAttribute("password")
 					+ " " + session.getId());
-
+			
+			//Do nothing but redirect to successful login page if the user has login the site
 			if (!session.isNew()
 					&& UserManager.checkLogin(session.getAttribute("username"), session.getAttribute("password"))) {
 				result.put("DispatchURL", "loginsucc.jsp");
-			} else {
+			} else { 
+				//Check whether username and password input by user are matched 
 				if (para.size() > DEFAULT_PARA_COUNT) {
 					result = um.login();
-
+					
+					//Set username and password to a session if login is accepted
 					if (result.containsKey("username") && result.containsKey("password")) {
 						session.setAttribute("username", result.get("username"));
 						session.setAttribute("password", result.get("password"));
@@ -106,12 +114,11 @@ public class UserServ extends HttpServlet {
 					for (Entry<String, Object> entry : result.entrySet()) {
 						request.setAttribute(entry.getKey(), entry.getValue());
 					}
-				} else {
+				} else { // It is the first time to display login page, just forward to it without any process
 					result.put("DispatchURL", "login.jsp");
 				}
 			}
-		} else if (query_url.contentEquals("logout")) {
-			//result.put("DispatchURL", request.getHeader("Refer")==null?"index.jsp":request.getHeader("Refer"));
+		} else if (query_url.contentEquals("logout")) { // Logout operation, disable its session and redirect
 			session.invalidate();
 			response.sendRedirect(request.getHeader("Referer")==null?"index.jsp":request.getHeader("Referer"));
 			return;

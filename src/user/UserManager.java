@@ -13,7 +13,7 @@ public class UserManager {
 
 	public UserManager() {
 		// TODO Auto-generated constructor stub
-		//dao = new UserDAO();
+		// dao = new UserDAO();
 	}
 
 	public void setParameter(Map<String, String> parameter) {
@@ -24,16 +24,21 @@ public class UserManager {
 		return user_manager;
 	}
 
+	/*
+	 * This method is to process user's login operation
+	 * 
+	 * @return parameters map that ready to send back to front side
+	 */
 	public Map<String, Object> login() {
 		Map<String, Object> result = new HashMap<>();
 		List<Object> query_result = dao.login(parameter);
-		if ((long) query_result.get(0) == 1) {
+		if ((long) query_result.get(0) == 1) { // Login successfully
 			result.put("isLogin", true);
 			result.put("username", parameter.get("Text_username"));
 			result.put("password", parameter.get("Text_password"));
 			result.put("LastURL", parameter.get("LastURL"));
 			result.put("DispatchURL", "loginsucc.jsp");
-		} else {
+		} else { // Login refused
 			result.put("isLogin", false);
 			result.remove("username");
 			result.remove("password");
@@ -43,6 +48,17 @@ public class UserManager {
 		return result;
 	}
 
+	/*
+	 * A static tool method to check whether specified username and password are
+	 * matched or not. This method will be called at each operation in this
+	 * website
+	 * 
+	 * @param username is the one to be checked
+	 * 
+	 * @param password is the one to be checked
+	 * 
+	 * @return the result of checking
+	 */
 	public static boolean checkLogin(String username, String password) {
 		Map<String, String> para = new HashMap<>();
 		para.put("Text_username", username);
@@ -54,6 +70,14 @@ public class UserManager {
 			return false;
 	}
 
+	/*
+	 * This method is the overriding of the above one, with the same mechanism.
+	 * 	@param username is the one to be checked
+	 * 
+	 * @param password is the one to be checked
+	 * 
+	 * @return the result of checking
+	 */
 	public static boolean checkLogin(Object username, Object password) {
 		Map<String, String> para = new HashMap<>();
 		if (username == null || password == null)
