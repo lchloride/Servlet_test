@@ -16,7 +16,7 @@ import anime.dao.Store;
  */
 public class DB {
 	/*
-	 * This method will obtain an available connection and return it. 
+	 * This method will obtain an available connection and return it.
 	 */
 	public static Connection getConn() throws NamingException, SQLException {
 		Connection conn = null;
@@ -26,7 +26,8 @@ public class DB {
 		// 参数jdbc/mysqlds为数据源和JNDI绑定的名字
 		DataSource ds = (DataSource) envContext.lookup("jdbc/mysqlds");
 		conn = ds.getConnection();
-		//System.out.println(conn.toString() + "<span style='color:red;'>JNDI测试成功<span>");
+		// System.out.println(conn.toString() + "<span
+		// style='color:red;'>JNDI测试成功<span>");
 
 		return conn;
 	}
@@ -34,11 +35,15 @@ public class DB {
 	public static void closeConn(Connection conn) throws SQLException {
 		conn.close();
 	}
-	
+
 	/*
-	 * This method executes a SQL sentence and generates a list of query result of object
+	 * This method executes a SQL sentence and generates a list of query result
+	 * of object
+	 * 
 	 * @param sql is query sentence
+	 * 
 	 * @param method indicates the method of Store interface
+	 * 
 	 * @return a set of column names, result content
 	 */
 	public static <T> Object[] execSQL(String sql, Store<T> method) {
@@ -67,7 +72,7 @@ public class DB {
 				item_obj = method.format(item);
 				form.add(item_obj);
 			}
-			//System.out.println("querysize:"+form.size());
+			// System.out.println("querysize:"+form.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -98,9 +103,10 @@ public class DB {
 		return result;
 	}
 
-	// 只查询一个向量
-	public static List<Object> execSQL(String sql) {
-		List<Object> result = new ArrayList<Object>();
+	// 普通查表
+	public static List<List<Object>> execSQL(String sql) {
+		List<List<Object>> result = new ArrayList<List<Object>>();
+		List<Object>result_entry = new ArrayList<>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -111,9 +117,11 @@ public class DB {
 
 			ResultSetMetaData rsmd = rs.getMetaData();
 
-			rs.next();
-			for (int i = 1; i <= rsmd.getColumnCount(); i++)
-				result.add(rs.getObject(i));
+			while (rs.next()) {
+				for (int i = 1; i <= rsmd.getColumnCount(); i++)
+					result_entry.add(rs.getObject(i));
+				result.add(result_entry);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

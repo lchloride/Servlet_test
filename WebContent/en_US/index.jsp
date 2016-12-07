@@ -10,19 +10,18 @@
 <title>AnimeHelper</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"
 	charset="utf-8">
-<link rel="icon" href="../image/page-icon.ico" type="image/x-ico" />
+	
+<link rel="icon" href="/AnimeHelper/image/page-icon.ico" type="image/x-ico" />
+
 <!-- 新 Bootstrap 核心 CSS 文件 -->
-<link
-	href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"
+<link href="/AnimeHelper/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-<script
-	src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="/AnimeHelper/bootstrap/js/jquery.min.js"></script>
 
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script
-	src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/AnimeHelper/bootstrap/js/bootstrap.min.js"></script>
 <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
 <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
 <!--[if lt IE 9]>
@@ -121,7 +120,11 @@ label.text {
 			return true;
 	}
 	var collapse = false;
-	var page_idx = ${!empty page_idx ? page_idx : 1};
+	var page_idx = $
+	{
+		!empty
+		page_idx ? page_idx : 1
+	};
 	function loadArrow() {
 		if (collapse == true)
 			return "Query Condition<span class=\"glyphicon glyphicon-collapse-down\" style=\"float:right\"></span>";
@@ -164,10 +167,27 @@ label.text {
 							</ul></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 5%">
-						<li><a href="#"><span class="glyphicon glyphicon-user"></span>
-								Register</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>
-								Login</a></li>
+						<c:choose>
+							<c:when test="${not empty isLogin  and isLogin == true}">
+								<li class="dropdown"><a href="#" class="dropdown-toggle"
+									data-toggle="dropdown">${sessionScope.username } <b
+										class="caret"></b>
+								</a>
+									<ul class="dropdown-menu">
+										<li><a href="#">Profile</a></li>
+										<li><a href="#">Settings</a></li>
+										<li><a href="#">Hello</a></li>
+										<li class="divider"></li>
+										<li><a href="/AnimeHelper/en_US/logout">Logout</a></li>
+									</ul></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="#"><span class="glyphicon glyphicon-user"></span>
+										Register</a></li>
+								<li><a href="/AnimeHelper/en_US/login"><span
+										class="glyphicon glyphicon-log-in"></span> Login</a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>
 			</div>
