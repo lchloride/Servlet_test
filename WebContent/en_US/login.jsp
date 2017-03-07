@@ -27,8 +27,8 @@
 <![endif]-->
 <style type="text/css">
 .body {
-	background: #2d3b36 url(/AnimeHelper/image/bg.jpg) no-repeat bottom
-		right fixed;
+	background: #2d3b36 url(/AnimeHelper/image/bg.jpg) no-repeat center
+		bottom fixed;
 	background-size: cover
 }
 
